@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DWARAKA Hospitals 24/7 - Appointment System</title>
+    <!-- Simple CSS styling with Blue and Green Medical Theme -->
+    <style>
+        :root {
+            --primary-blue: #1e40af; 
+            --medical-green: #10b981; 
+            --light-bg: #f8fafc; 
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--light-bg);
+            color: #333;
+        }
+
+        /* Header Section */
+        header {
+            background-color: var(--white);
+            color: var(--primary-blue);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--medical-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Navigation Menu with Dropdowns */
+        nav {
+            background-color: var(--primary-blue);
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-btn {
+            background: none;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--medical-green);
+        }
+
+        /* Dropdown Styling */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f5f9;
+            color: var(--primary-blue);
+        }
+
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Hero Section at Home */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 40px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dcfce7 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .hero-text {
+            max-width: 50%;
+        }
+
+        .hero-img {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Main Content Container */
+        .main-box {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: var(--primary-blue);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .action-btn {
+            background-color: var(--medical-green);
+            color: white;
+            padding: 14px;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #059669;
+        }
+
+        /* Table Design */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--primary-blue);
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* Utility */
+        .hidden { display: none; }
+        
+        .success-banner {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-box">
+            <svg width="45" height="45" viewBox="0 0 24 24" fill="var(--medical-green)">
+                <path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-2v-4H8v-2h4V8h2v4h4v2z"/>
+            </svg>
+            <h1 style="margin:0; font-size: 28px;">DWARAKA Hospitals 24/7</h1>
+        </div>
+        <p style="margin: 5px 0 0 0; color: #64748b;">Healthcare Excellence, Every Moment</p>
+    </header>
+
+    <nav>
+        <div class="nav-item">
+            <button class="nav-btn" onclick="showSection('home')">Home</button>
+        </div>
+        <div class="nav-item">
+            <button class="nav-btn" onclick="showSection('book')">Book Appointment</button>
+        </div>
+        
+        <!-- Health Library Dropdown -->
+        <div class="nav-item">
+            <button class="nav-btn">Health Library ▼</button>
+            <div class="dropdown-content">
+                <a href="#">Diet & Nutrition</a>
+                <a href="#">Mental Wellness</a>
+                <a href="#">Common Diseases</a>
+                <a href="#">First Aid Guide</a>
+                <a href="#">Yoga & Fitness</a>
+            </div>
+        </div>
+
+        <!-- Medical Services Dropdown -->
+        <div class="nav-item">
+            <button class="nav-btn">Medical Services ▼</button>
+            <div class="dropdown-content">
+                <a href="#">Emergency 24/7</a>
+                <a href="#">Pathology Lab</a>
+                <a href="#">Radiology (X-Ray/MRI)</a>
+                <a href="#">Pharmacy</a>
+                <a href="#">Tele-Consultation</a>
+            </div>
+        </div>
+
+        <!-- This is where you check booked appointments -->
+        <div class="nav-item">
+            <button class="nav-btn" onclick="checkAdminAuth()" style="background-color: rgba(255,255,255,0.1); border-left: 1px solid rgba(255,255,255,0.2);">Staff Portal (Admin) 🔒</button>
+        </div>
+    </nav>
+
+    <div class="main-box">
+        
+        <div id="msg" class="success-banner hidden">
+            ✓ Appointment Confirmed! Thank you for choosing DWARAKA Hospitals.
+        </div>
+
+        <!-- HOME SECTION -->
+        <div id="section-home">
+            <div class="hero">
+                <div class="hero-text">
+                    <h2 style="color: var(--primary-blue); margin-top: 0;">Caring for You & Your Family</h2>
+                    <p>Experience world-class medical facilities at DWARAKA Hospitals with a patient-friendly approach. Our doctors are available 24/7 to ensure your well-being.</p>
+                    <button class="action-btn" style="width: auto; padding: 10px 25px;" onclick="showSection('book')">Start Booking</button>
+                </div>
+                <div class="hero-img">
+                    <!-- Doctor Avatar SVG -->
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="90" fill="white" />
+                        <path d="M100 50c-15 0-27 12-27 27s12 27 27 27 27-12 27-27-12-27-27-27zm0 60c-30 0-54 18-54 40v10h108v-10c0-22-24-40-54-40z" fill="#1e40af" />
+                        <rect x="85" y="110" width="30" height="40" fill="#10b981" />
+                        <path d="M70 120h60" stroke="#10b981" stroke-width="4"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px;">
+                    <h3 style="color: var(--medical-green); margin-top: 0;">Quick Checkups</h3>
+                    <p style="font-size: 14px;">Visit our general ward for routine checkups and health screenings.</p>
+                </div>
+                <div style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px;">
+                    <h3 style="color: var(--primary-blue); margin-top: 0;">Specialist Care</h3>
+                    <p style="font-size: 14px;">Access top-tier experts in Cardiology, Neurology, and more.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOKING SECTION -->
+        <div id="section-book" class="hidden">
+            <h2 style="color: var(--primary-blue); text-align: center;">Patient Registration</h2>
+            <form id="bookingForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Patient Full Name</label>
+                        <input type="text" id="nameInput" placeholder="Enter Full Name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" id="emailInput" placeholder="example@mail.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Mobile Number (10 Digits)</label>
+                        <input type="number" id="phoneInput" placeholder="e.g. 9876543210" required 
+                               oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Appointment Date</label>
+                        <input type="date" id="dateInput" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Department</label>
+                        <select id="deptInput" required onchange="updateDoctors()">
+                            <option value="">-- Choose Speciality --</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Orthopedics">Orthopedics</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Gastroenterology">Gastroenterology</option>
+                            <option value="Ophthalmology">Ophthalmology</option>
+                            <option value="ENT">ENT</option>
+                            <option value="Urology">Urology</option>
+                            <option value="General Ward">General Ward</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Assign Doctor</label>
+                        <select id="doctorInput" required>
+                            <option value="">-- Select Department First --</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>Preferred Time</label>
+                        <select id="timeInput" required>
+                            <option value="">-- Select Time Slot --</option>
+                            <option value="09:00 AM">09:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="11:30 AM">11:30 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="01:00 PM">01:00 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="03:00 PM">03:00 PM</option>
+                            <option value="04:30 PM">04:30 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="action-btn">Confirm My Appointment</button>
+            </form>
+        </div>
+
+        <!-- ADMIN/STAFF VIEW (This is the Booked Appointments List) -->
+        <div id="section-admin" class="hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
+                <h2 style="color: var(--primary-blue); margin: 0;">Booked Appointments List</h2>
+                <button onclick="logoutAdmin()" style="color: #ef4444; border: 1px solid #ef4444; background: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">Logout / Lock List</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient Info</th>
+                        <th>Care Details</th>
+                        <th>Schedule</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    <!-- Data populated by JS -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        let appointmentData = [];
+        let isStaffAuthenticated = false;
+        const STAFF_PASSCODE = "1234"; 
+
+        const doctorsByDept = {
+            "Cardiology": ["Dr. Sharma (Heart Specialist)", "Dr. Reddy"],
+            "Pediatrics": ["Dr. Anitha (Child Specialist)", "Dr. Gupta"],
+            "Neurology": ["Dr. Varma (Brain Specialist)", "Dr. Rao"],
+            "Orthopedics": ["Dr. Khan (Bone Specialist)", "Dr. Patil"],
+            "Dermatology": ["Dr. Meena (Skin Specialist)", "Dr. Nair"],
+            "Gastroenterology": ["Dr. Prasad", "Dr. Jain"],
+            "Ophthalmology": ["Dr. Murthy (Eye Specialist)"],
+            "ENT": ["Dr. Siddiqui"],
+            "Urology": ["Dr. Malhotra"],
+            "General Ward": ["Dr. Sameer (General Physician)", "Dr. Kavita"]
+        };
+
+        function updateDoctors() {
+            const dept = document.getElementById('deptInput').value;
+            const doctorSelect = document.getElementById('doctorInput');
+            doctorSelect.innerHTML = '<option value="">-- Choose Doctor --</option>';
+            
+            if (dept && doctorsByDept[dept]) {
+                doctorsByDept[dept].forEach(doc => {
+                    let opt = document.createElement('option');
+                    opt.value = doc;
+                    opt.innerHTML = doc;
+                    doctorSelect.appendChild(opt);
+                });
+            }
+        }
+
+        function showSection(name) {
+            document.getElementById('section-home').classList.add('hidden');
+            document.getElementById('section-book').classList.add('hidden');
+            document.getElementById('section-admin').classList.add('hidden');
+            document.getElementById('section-' + name).classList.remove('hidden');
+
+            if(name === 'admin') updateTable();
+        }
+
+        function checkAdminAuth() {
+            if (isStaffAuthenticated) {
+                showSection('admin');
+                return;
+            }
+
+            let pass = prompt("DWARAKA Staff Only: Please enter your 4-digit passcode (1234):");
+            if (pass === STAFF_PASSCODE) {
+                isStaffAuthenticated = true;
+                showSection('admin');
+            } else if (pass !== null) {
+                alert("Incorrect Passcode. Access Denied.");
+            }
+        }
+
+        function logoutAdmin() {
+            isStaffAuthenticated = false;
+            showSection('home');
+        }
+
+        const form = document.getElementById('bookingForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const phone = document.getElementById('phoneInput').value;
+
+            if(phone.length !== 10) {
+                alert("Please enter a valid 10-digit mobile number.");
+                return;
+            }
+
+            const newRecord = {
+                name: document.getElementById('nameInput').value,
+                email: document.getElementById('emailInput').value,
+                phone: phone,
+                date: document.getElementById('dateInput').value,
+                dept: document.getElementById('deptInput').value,
+                doctor: document.getElementById('doctorInput').value,
+                time: document.getElementById('timeInput').value
+            };
+
+            appointmentData.push(newRecord);
+
+            const msg = document.getElementById('msg');
+            msg.classList.remove('hidden');
+            form.reset();
+            document.getElementById('doctorInput').innerHTML = '<option value="">-- Select Department First --</option>';
+
+            setTimeout(() => {
+                msg.classList.add('hidden');
+                showSection('home');
+            }, 2500);
+        });
+
+        function updateTable() {
+            const table = document.getElementById('dataTable');
+            table.innerHTML = ""; 
+
+            if(appointmentData.length === 0) {
+                table.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 40px; color: #94a3b8;'>No appointments found for today.</td></tr>";
+                return;
+            }
+
+            appointmentData.forEach((item, index) => {
+                let row = `<tr>
+                    <td>
+                        <div style="font-weight:bold">${item.name}</div>
+                        <div style="font-size:12px; color:#64748b">${item.email}</div>
+                        <div style="font-size:12px; color:#64748b">${item.phone}</div>
+                    </td>
+                    <td>
+                        <span class="badge">${item.dept}</span>
+                        <div style="font-size:13px; margin-top:5px; color:#1e40af">Doc: ${item.doctor}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight:bold">${item.date}</div>
+                        <div style="color:var(--medical-green)">${item.time}</div>
+                    </td>
+                    <td><button onclick="removeItem(${index})" style="color:#ef4444; border:none; background:none; cursor:pointer; font-weight:600;">Cancel</button></td>
+                </tr>`;
+                table.innerHTML += row;
+            });
+        }
+
+        function removeItem(idx) {
+            if(confirm("Confirm cancellation of this appointment?")) {
+                appointmentData.splice(idx, 1);
+                updateTable();
+            }
+        }
+    </script>
+</body>
+</html>
